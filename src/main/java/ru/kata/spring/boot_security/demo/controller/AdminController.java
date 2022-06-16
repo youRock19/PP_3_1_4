@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,14 +20,17 @@ public class AdminController {
     private UserService service;
     
     @GetMapping
-    public String getAllUser(Model model) {
+    public String getAllUser(Principal principal, Model model) {
         model.addAttribute("userlist", service.allUsers());
+        model.addAttribute("thisuser", service.findUser(principal.getName()));
+        model.addAttribute("roles", service.getRoles());
         return "users";
     }
     @GetMapping("/new")
-    public String addUser(Model model) {
+    public String addUser(Principal principal, Model model) {
         model.addAttribute("newUser", new User());
         model.addAttribute("roles", service.getRoles());
+        model.addAttribute("thisuser", service.findUser(principal.getName()));
         return "new";
     }
     
@@ -42,12 +46,6 @@ public class AdminController {
         return "redirect:/admin";
     }
     
-    @GetMapping("/edit/{id}")
-    public String updateUser(Model model, @PathVariable("id") int id) {
-        model.addAttribute("user", service.readUser(id));
-        model.addAttribute("roles", service.getRoles());
-        return "edit";
-    }
     
     @PostMapping("{id}")
     public String update(@ModelAttribute("user") User user) {
