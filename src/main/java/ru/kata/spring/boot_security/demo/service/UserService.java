@@ -51,12 +51,14 @@ public class UserService implements UserDetailsService {
     public User findUser(String username) {
         return userRepository.findByUsername(username);
     }
+    //ищет пользователя по id
+    public User findUserById(Integer id) {
+        return userRepository.findById(id).get();
+    }
 //возвращает список ролей
     public List<Role> getRoles() {
        return roleRepository.findAll();
     }
-    //обновляет пользователя
-
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

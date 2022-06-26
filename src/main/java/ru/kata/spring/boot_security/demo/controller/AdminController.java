@@ -23,33 +23,6 @@ public class AdminController {
     public String getAllUser(Principal principal, Model model) {
         model.addAttribute("userlist", service.allUsers());
         model.addAttribute("thisuser", service.findUser(principal.getName()));
-        model.addAttribute("roles", service.getRoles());
         return "users";
-    }
-    @GetMapping("/new")
-    public String addUser(Principal principal, Model model) {
-        model.addAttribute("newUser", new User());
-        model.addAttribute("roles", service.getRoles());
-        model.addAttribute("thisuser", service.findUser(principal.getName()));
-        return "new";
-    }
-    
-    @PostMapping
-    public String createUser(@ModelAttribute("newUser") User user) {
-        service.saveUser(user);
-        return "redirect:/admin";
-    }
-
-    @GetMapping("/delete/{id}")
-    public String delete(Model model, @PathVariable("id") int id) {
-        service.deleteUser(id);
-        return "redirect:/admin";
-    }
-    
-    
-    @PostMapping("{id}")
-    public String update(@ModelAttribute("user") User user) {
-        service.saveUser(user);
-        return "redirect:/admin";
-    }
+    }   
 }

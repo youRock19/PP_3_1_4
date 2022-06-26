@@ -3,13 +3,13 @@ package ru.kata.spring.boot_security.demo.configs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 @Configuration
@@ -42,9 +42,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return daoAuthenticationProvider;
     }
 
-    @Override
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+////        http.cors().and()
+//http.csrf().disable();
+//        http.authorizeHttpRequests()
+////                .antMatchers("/**").permitAll()
+//                .antMatchers("/admin/**").hasRole("ADMIN")
+//                .antMatchers("/user/**").hasAnyRole("ADMIN", "USER")
+//                .antMatchers("/").authenticated()
+//                .antMatchers(HttpMethod.GET, "/api/users/**").hasAnyRole("ADMIN", "USER")
+//                .antMatchers("/api/**").hasRole("ADMIN")
+//                .and()
+//                .formLogin()//включаем форм логин
+//                .loginPage("/login")//указываем что form login находиться на данном мэппинге
+//                .usernameParameter("email")
+//                .successHandler(successUserHandler);
+//    }
+        @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests()
+        http.cors().and().csrf().disable();
+                http.authorizeHttpRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/").authenticated()
